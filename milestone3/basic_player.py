@@ -18,31 +18,31 @@ class AlphaBetaPlayer(Player, minimax.Game):
 
     def successors(self, state):
         board, player = state
+        next_player = -player
         for i in board.get_actions():
-            print("successsor")
-            yield (i, (board.clone().play_action(i), player))
+            yield(i, (board.clone().play_action(i), next_player))
             
 
-
-
     def cutoff(self, state, depth):
-        print("cutoff")
         board, player = state
         return board.is_finished()
 
     def evaluate(self, state):
-        print("evaluate")
         board, player = state
+
         return board.get_score()
+                
 
     def play(self, percepts, step, time_left):
-        print("play")
         if step % 2 == 0:
             player = -1
         else:
             player = 1
         state = (Board(percepts), player)
-        return minimax.search(state, self)
+        self.step = step
+        self.time_left = time_left
+        print(time_left)
+        return minimax.search(state, self, True)
 
 
 if __name__ == "__main__":
